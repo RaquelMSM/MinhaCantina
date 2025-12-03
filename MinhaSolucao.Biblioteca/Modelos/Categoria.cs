@@ -1,4 +1,4 @@
-﻿namespace MinhaSolucao.Biblioteca.Modelos;
+﻿namespace MinhaCantina.Biblioteca.Modelos;
 
 public class Categoria
 {
