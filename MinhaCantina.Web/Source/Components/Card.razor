@@ -1,0 +1,20 @@
+﻿<div class="card" style="width: 18rem;">
+    <img src="/imagens/coxinha-de-frango-2.webp" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">@Titulo</h5>
+        <p class="card-text">@Descricao</p>
+        <div class="d-flex align-items-end mb-3">
+            <span class="text-muted text-decoration-line-through">R$7,00</span>
+            <span class="h4 mb-0 ms-2 text-success fw-bold">R$ 5,00</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Titulo { get; set; } = string.Empty;
+    [Parameter] public string Descricao { get; set; } = string.Empty;
+    [Parameter] public decimal ValorReal { get; set; }
+    [Parameter] public decimal ValorDesconto { get; set; }
+    [Parameter]
+  
+}
