@@ -1,28 +1,33 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MinhaCantina.Biblioteca.Modelos;
 using MinhaCantina.Servidor.Dados;
 using MySqlConnector;
+using MinhaCantina.Biblioteca.Modelos;
+using MinhaCantina.Biblioteca.DTOs;
 
 namespace MinhaCantina.Servidor.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class CategoriaController(MinhaCantinaContexto contextoCantina) : ControllerBase
+public class CategoriaController(MinhaCantinaContexto minhaCantinaContexto) : ControllerBase
 {
-	private MinhaCantinaContexto _contexto = contextoCantina;
-	// Criar uma propriedade privada do tipo MinhaCantinaContexto
-	// O nome da propriedade será _contexto;
+	private MinhaCantinaContexto _contexto = minhaCantinaContexto; // Criar uma propriedade do tipo MinhaCantinaContexto
 
-	// [Atributo]
-	[HttpPost("criar")]
-	public IActionResult CriarCategoria([FromBody] CategoriaRegistroDto requisicao)
+
+	// O nome do metodo é CriarCategoria e ele recebe um parametro com um atributo
+	// Parametro: [FromBody] Categoria requisicao
+	// Dentro do metodo, retorne um StatusCode 200
+
+	// [Atributo] 
+
+	[HttpPost("criar")] //Criar uma rota (criar) do verbo HTTP POST ("CRIAR") pois iremos criar algo novo
+	public IActionResult CriarCategoria([FromBody] CategoriaRegistroDto requisicao) //Abaixo do atributo, criar um metódo publico  que retorne um IActionResult
 	{
-		Categoria categoria;
+		var categoria = Categoria.Criar(requisicao.Nome);
+
 		try
 		{
-			categoria = Categoria.Criar(requisicao.Nome.ToUpper());
 			_contexto.Categorias.Add(categoria);
 			_contexto.SaveChanges();
 		}
@@ -37,28 +42,27 @@ public class CategoriaController(MinhaCantinaContexto contextoCantina) : Control
 					return StatusCode(400, "Essa categoria já existe");
 				}
 			}
-
-			throw excecao;
 		}
 		catch (Exception excecao)
 		{
-			return StatusCode(500, $"Ocorreu um erro inesperado: {excecao.Message}");
+			return StatusCode(500, $"Ocorreu um erro inesperado:{excecao.Message}");
 		}
+		// Salvar dentro do banco de dados
 
 		return StatusCode(201, categoria);
 	}
 
-	// [Atributo]
+
 	[HttpGet("pegar/{id}")] // -> Verbo HTTP
+
 	public IActionResult PegarCategoria(int id)
 	{
 		var categoria = _contexto.Categorias.Find(id);
 
 		if (categoria is null)
 		{
-			return StatusCode(404, "Categoria não encontrada");
+			return StatusCode(404, "Categoria não emcontrada");
 		}
-
 		return StatusCode(200, categoria);
 	}
 
@@ -70,13 +74,4 @@ public class CategoriaController(MinhaCantinaContexto contextoCantina) : Control
 	}
 }
 
-public class CategoriaRegistroDto
-{
-	public string Nome { get; set; } // Propriedade
-}
 
-public class CategoriaRespostaDto
-{
-	public int Id { get; set; }
-	public string Nome { get; set; }
-}
