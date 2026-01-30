@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using MinhaCantina.Biblioteca.DTOs
 
 <PageTitle>Home</PageTitle>
 
@@ -6,7 +7,17 @@
 <section class="d-flex">
 
 
-<Card Titulo="Coxinha" CaminhoImagem=" />"
-<Card Titulo="Coca Cola" CaminhoImagem=" />"
-<Card Titulo="Brownie" CaminhoImagem=" />"
+<Card Titulo="Coxinha" Descricao="Salgado frito" ValorReal="10M" ValorDesconto="7M" CaminhoImagem="/imagens/>"
+<Card Titulo="Coca Cola" Descricao="Coquinha Gelada" ValorReal="7M" ValorDesconto="5M" CaminhoImagem="/Coc />" 
+<Card Titulo="Brownie" Descricao= ValorRealValorDesconto="CaminhoImagem=" />"
+
 </section>
+
+@code {
+	private List<ProdutoRespostaDto> listaProdutos = new()
+	{
+		new ProdutoRespostaDto{Id = 1, Nome = "Coxinha", Preco = 10M},
+		new ProdutoRespostaDto{Id = 2, Nome = "Coca Cola", Preco = 5M},
+		new ProdutoRespostaDto{Id = 3, Nome = "Brownie", Preco = 15M},
+	};
+}
